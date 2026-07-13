@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Solis | Dashboard de Despesas</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<header class="topbar">
+
+    <div class="logo-area">
+
+        <img src="assets/logo.png" alt="Solis">
+
+    </div>
+
+    <div class="search-area">
+
+        <input
+                id="pesquisa"
+                type="text"
+                placeholder="Pesquisar documento, fornecedor..."
+        >
+
+    </div>
+
+    <div class="top-actions">
+
+        <button class="analysis-btn">
+
+            Análises
+
+        </button>
+
+    </div>
+
+</header>
+
+<main class="container">
+
+    <section class="cards">
+
+        <div class="card">
+
+            <span>Total de Documentos</span>
+
+            <h2 id="total-documentos">0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <span>Valor Total</span>
+
+            <h2 id="valor-total">R$ 0,00</h2>
+
+        </div>
+
+        <div class="card">
+
+            <span>Fornecedores</span>
+
+            <h2 id="total-fornecedores">0</h2>
+
+        </div>
+
+        <div class="card">
+
+            <span>Valor / Dia</span>
+
+            <h2 id="valor-dia">R$ 0,00</h2>
+
+        </div>
+
+    </section>
+
+    <section class="table-container">
+
+        <table>
+
+            <thead>
+
+            <tr>
+
+                <th>DOCUMENTO</th>
+                <th>VENCIMENTO</th>
+                <th>QUITAÇÃO</th>
+                <th>1</th>
+                <th>2</th>
+                <th>3</th>
+                <th>4</th>
+                <th>5</th>
+                <th>6</th>
+                <th>VALOR/DIA</th>
+                <th>FORNECEDOR</th>
+                <th>VALOR</th>
+
+            </tr>
+
+            </thead>
+
+            <tbody id="tbody-despesas">
+
+            </tbody>
+
+        </table>
+
+    </section>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script src="js/config.js"></script>
+<script src="js/database.js"></script>
+<script src="js/services.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/tabela.js"></script>
+<script src="js/cards.js"></script>
+<script src="js/pesquisa.js"></script>
+<script src="js/realtime.js"></script>
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>
