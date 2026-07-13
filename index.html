@@ -356,8 +356,8 @@
                     <div class="form-input-wrapper">
                         <span class="form-input-icon">👤</span>
                         <input
-                            id="login-username"
-                            type="text"
+                            id="login-email"
+                            type="email"
                             class="form-input"
                             placeholder="Digite seu usuário"
                             required
@@ -372,7 +372,7 @@
                     <div class="form-input-wrapper">
                         <span class="form-input-icon">🔒</span>
                         <input
-                            id="login-password"
+                            id="login-senha"
                             type="password"
                             class="form-input"
                             placeholder="Digite sua senha"
@@ -522,8 +522,8 @@
         const loginScreen = document.getElementById('login-screen');
         const dashboardScreen = document.getElementById('dashboard-screen');
         const loginForm = document.getElementById('login-form');
-        const loginUsername = document.getElementById('login-username');
-        const loginPassword = document.getElementById('login-password');
+        const loginUsername = document.getElementById('login-email');
+        const loginPassword = document.getElementById('login-senha');
         const passwordToggle = document.getElementById('password-toggle');
         const loginError = document.getElementById('login-error');
         const loginSubmit = document.getElementById('login-submit');
@@ -570,7 +570,7 @@
 
             try {
                 // Chamar a função de login do auth.js
-                const resultado = await login(username, password);
+                await login();
 
                 if (resultado.sucesso) {
                     // Salvar preferência de "lembrar de mim"
