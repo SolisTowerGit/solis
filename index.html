@@ -356,8 +356,8 @@
                     <div class="form-input-wrapper">
                         <span class="form-input-icon">👤</span>
                         <input
-                            id="login-email"
-                            type="email"
+                            id="login-username"
+                            type="text"
                             class="form-input"
                             placeholder="Digite seu usuário"
                             required
@@ -372,7 +372,7 @@
                     <div class="form-input-wrapper">
                         <span class="form-input-icon">🔒</span>
                         <input
-                            id="login-senha"
+                            id="login-password"
                             type="password"
                             class="form-input"
                             placeholder="Digite sua senha"
@@ -502,9 +502,10 @@
         </main>
     </div>
 
-    <!-- SCRIPTS -->
+    <!-- SCRIPTS EXTERNOS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <!-- SCRIPTS DO SISTEMA -->
     <script src="js/config.js"></script>
     <script src="js/database.js"></script>
     <script src="js/services.js"></script>
@@ -516,160 +517,141 @@
     <script src="js/auth.js"></script>
     <script src="js/dashboard.js"></script>
 
-    <!-- SCRIPT DE CONTROLE DA TELA DE LOGIN -->
+    <!-- SCRIPT DE INTERFACE (UI) -->
     <script>
-        // Elementos
-        const loginScreen = document.getElementById('login-screen');
-        const dashboardScreen = document.getElementById('dashboard-screen');
-        const loginForm = document.getElementById('login-form');
-        const loginUsername = document.getElementById('login-email');
-        const loginPassword = document.getElementById('login-senha');
-        const passwordToggle = document.getElementById('password-toggle');
-        const loginError = document.getElementById('login-error');
-        const loginSubmit = document.getElementById('login-submit');
-        const rememberMe = document.getElementById('remember-me');
-        const altLoginBtn = document.getElementById('alt-login-btn');
-        const logoutBtn = document.getElementById('logout-btn');
+        // Elementos da UI
+        const UI = {
+            loginScreen: document.getElementById('login-screen'),
+            dashboardScreen: document.getElementById('dashboard-screen'),
+            loginForm: document.getElementById('login-form'),
+            loginUsername: document.getElementById('login-username'),
+            loginPassword: document.getElementById('login-password'),
+            passwordToggle: document.getElementById('password-toggle'),
+            loginError: document.getElementById('login-error'),
+            loginSubmit: document.getElementById('login-submit'),
+            rememberMe: document.getElementById('remember-me'),
+            altLoginBtn: document.getElementById('alt-login-btn'),
+            logoutBtn: document.getElementById('logout-btn')
+        };
 
-        // Toggle de visibilidade de senha
-        passwordToggle.addEventListener('click', (e) => {
-            e.preventDefault();
-            const type = loginPassword.type === 'password' ? 'text' : 'password';
-            loginPassword.type = type;
-            passwordToggle.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
-        });
-
-        // Limpar erro ao digitar
-        loginUsername.addEventListener('input', () => {
-            if (loginError.textContent) {
-                loginError.classList.add('hidden');
+        // Funções de Controle de Tela (Locais)
+        const Interface = {
+            mostrarLogin: function() {
+                UI.loginScreen.classList.remove('hidden');
+                UI.dashboardScreen.classList.add('hidden');
+                
+                // Restaurar username se "lembrar de mim" estava ativo
+                if (localStorage.getItem('solis-remember-me') === 'true') {
+                    const username = localStorage.getItem('solis-username');
+                    if (username) {
+                        UI.loginUsername.value = username;
+                        UI.rememberMe.checked = true;
+                        UI.loginPassword.focus();
+                    }
+                }
+            },
+            
+            mostrarDashboard: function() {
+                UI.loginScreen.classList.add('hidden');
+                UI.dashboardScreen.classList.remove('hidden');
+                
+                // Inicializar dashboard se a função existir
+                if (typeof inicializarDashboard === 'function') {
+                    inicializarDashboard();
+                }
+            },
+            
+            mostrarErro: function(mensagem) {
+                UI.loginError.textContent = mensagem;
+                UI.loginError.classList.remove('hidden');
             }
+        };
+
+        // Event Listeners
+        UI.passwordToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const type = UI.loginPassword.type === 'password' ? 'text' : 'password';
+            UI.loginPassword.type = type;
+            UI.passwordToggle.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
         });
 
-        loginPassword.addEventListener('input', () => {
-            if (loginError.textContent) {
-                loginError.classList.add('hidden');
-            }
-        });
-
-        // Submissão do formulário
-        loginForm.addEventListener('submit', async (e) => {
+        UI.loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
-            const username = loginUsername.value.trim();
-            const password = loginPassword.value;
+            const username = UI.loginUsername.value.trim();
+            const password = UI.loginPassword.value;
 
             if (!username || !password) {
-                mostrarErro('Por favor, preencha todos os campos');
+                Interface.mostrarErro('Por favor, preencha todos os campos');
                 return;
             }
 
-            loginSubmit.disabled = true;
-            loginSubmit.classList.add('login-loading');
-            loginError.classList.add('hidden');
+            UI.loginSubmit.disabled = true;
+            UI.loginSubmit.classList.add('login-loading');
+            UI.loginError.classList.add('hidden');
 
             try {
-                // Chamar a função de login do auth.js
-                await login();
+                // Chama a função login() do seu auth.js
+                const resultado = await login(username, password);
 
-                if (resultado.sucesso) {
-                    // Salvar preferência de "lembrar de mim"
-                    if (rememberMe.checked) {
+                if (resultado && resultado.sucesso) {
+                    if (UI.rememberMe.checked) {
                         localStorage.setItem('solis-remember-me', 'true');
                         localStorage.setItem('solis-username', username);
                     } else {
                         localStorage.removeItem('solis-remember-me');
                         localStorage.removeItem('solis-username');
                     }
-
-                    // Mostrar dashboard
-                    mostrarDashboard();
+                    // A própria função login() do auth.js costuma chamar mostrarDashboard()
+                    // Mas garantimos aqui a troca de tela na interface
+                    Interface.mostrarDashboard();
                 } else {
-                    mostrarErro(resultado.mensagem || 'Usuário ou senha incorretos');
+                    Interface.mostrarErro(resultado?.mensagem || 'Usuário ou senha incorretos');
                 }
             } catch (erro) {
                 console.error('Erro ao fazer login:', erro);
-                mostrarErro('Erro ao conectar. Tente novamente.');
+                Interface.mostrarErro('Erro ao conectar. Tente novamente.');
             } finally {
-                loginSubmit.disabled = false;
-                loginSubmit.classList.remove('login-loading');
+                UI.loginSubmit.disabled = false;
+                UI.loginSubmit.classList.remove('login-loading');
             }
         });
 
-        // Botão de acessar com outro usuário
-        altLoginBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            loginUsername.value = '';
-            loginPassword.value = '';
-            loginUsername.focus();
-        });
-
-        // Botão de logout
-        logoutBtn.addEventListener('click', () => {
-            logout();
-        });
-
-        // Função para mostrar erro
-        function mostrarErro(mensagem) {
-            loginError.textContent = mensagem;
-            loginError.classList.remove('hidden');
-        }
-
-        // Função para mostrar a tela de login
-        function mostrarTelaLogin() {
-            loginScreen.classList.remove('hidden');
-            dashboardScreen.classList.add('hidden');
-
-            // Restaurar username se "lembrar de mim" estava ativo
-            if (localStorage.getItem('solis-remember-me') === 'true') {
-                const username = localStorage.getItem('solis-username');
-                if (username) {
-                    loginUsername.value = username;
-                    rememberMe.checked = true;
-                    loginPassword.focus();
-                }
-            }
-        }
-
-        // Função para mostrar o dashboard
-        function mostrarDashboard() {
-            loginScreen.classList.add('hidden');
-            dashboardScreen.classList.remove('hidden');
-
-            // Inicializar dashboard
-            if (typeof inicializarDashboard === 'function') {
-                inicializarDashboard();
-            }
-        }
-
-        // Verificar sessão ao carregar
-        document.addEventListener('DOMContentLoaded', async () => {
-            const sessaoValida = await verificarSessao();
-
-            if (sessaoValida) {
-                mostrarDashboard();
-            } else {
-                mostrarTelaLogin();
+        UI.logoutBtn.addEventListener('click', () => {
+            if (typeof logout === 'function') {
+                logout();
             }
         });
 
-        // Sobrescrever as funções do auth.js para usar as novas telas
-        const originalMostrarLogin = window.mostrarLogin;
-        const originalMostrarDashboard = window.mostrarDashboard;
-
+        // Integração com as funções globais do auth.js
+        // IMPORTANTE: Redefinimos as funções globais para que o auth.js 
+        // controle os elementos de tela corretos sem causar loop.
         window.mostrarLogin = function() {
-            mostrarTelaLogin();
-            if (typeof originalMostrarLogin === 'function') {
-                originalMostrarLogin();
-            }
+            Interface.mostrarLogin();
         };
 
         window.mostrarDashboard = function() {
-            mostrarDashboard();
-            if (typeof originalMostrarDashboard === 'function') {
-                originalMostrarDashboard();
-            }
+            Interface.mostrarDashboard();
         };
+
+        // Verificação inicial ao carregar a página
+        window.addEventListener('load', async () => {
+            try {
+                if (typeof verificarSessao === 'function') {
+                    const sessaoValida = await verificarSessao();
+                    if (sessaoValida) {
+                        Interface.mostrarDashboard();
+                    } else {
+                        Interface.mostrarLogin();
+                    }
+                } else {
+                    Interface.mostrarLogin();
+                }
+            } catch (e) {
+                console.error("Erro na verificação inicial:", e);
+                Interface.mostrarLogin();
+            }
+        });
     </script>
 </body>
 
