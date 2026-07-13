@@ -2,141 +2,675 @@
 <html lang="pt-BR">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Solis | Dashboard de Despesas</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
-          rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="css/style.css">
 
+    <style>
+        /* ===== TELA DE LOGIN ===== */
+        .login-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f1ed 0%, #fef5f0 100%);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .login-wrapper {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 420px;
+            padding: 48px 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .login-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+        }
+
+        .login-logo img {
+            height: 48px;
+            width: auto;
+        }
+
+        .login-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a1a1a;
+            margin: 0;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #1a1a1a;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .form-input-icon {
+            position: absolute;
+            left: 16px;
+            color: #999;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px 12px 44px;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s ease;
+            background: #fafafa;
+        }
+
+        .form-input:focus {
+            outline: none;
+            background: white;
+            border-color: #ff7a3d;
+            box-shadow: 0 0 0 3px rgba(255, 122, 61, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #999;
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #999;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            transition: color 0.2s ease;
+        }
+
+        .password-toggle:hover {
+            color: #666;
+        }
+
+        .form-actions {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 4px;
+        }
+
+        .checkbox-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            cursor: pointer;
+            accent-color: #ff7a3d;
+        }
+
+        .checkbox-wrapper label {
+            font-size: 13px;
+            color: #666;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .forgot-password {
+            font-size: 13px;
+            color: #ff7a3d;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-password:hover {
+            color: #e66a2d;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 12px 16px;
+            background: #ff7a3d;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 8px;
+        }
+
+        .login-button:hover {
+            background: #e66a2d;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 122, 61, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .login-divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            color: #ddd;
+        }
+
+        .login-divider::before,
+        .login-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e0e0e0;
+        }
+
+        .login-divider-text {
+            font-size: 12px;
+            color: #999;
+            font-weight: 500;
+        }
+
+        .alternative-login {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .alternative-login-button {
+            width: 100%;
+            padding: 12px 16px;
+            background: white;
+            color: #1a1a1a;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .alternative-login-button:hover {
+            background: #f9f9f9;
+            border-color: #d0d0d0;
+        }
+
+        .login-footer {
+            text-align: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #f0f0f0;
+            font-size: 12px;
+            color: #999;
+        }
+
+        .login-error {
+            background: #fee;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            margin-bottom: 16px;
+            border-left: 3px solid #c33;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        /* ===== RESPONSIVO ===== */
+        @media (max-width: 480px) {
+            .login-wrapper {
+                padding: 32px 24px;
+                margin: 16px;
+            }
+
+            .login-title {
+                font-size: 20px;
+            }
+
+            .login-logo img {
+                height: 40px;
+            }
+        }
+
+        /* ===== OCULTAR ELEMENTOS ===== */
+        .hidden {
+            display: none !important;
+        }
+    </style>
 </head>
 
 <body>
+    <!-- TELA DE LOGIN -->
+    <div id="login-screen" class="login-container">
+        <div class="login-wrapper">
+            <!-- CABEÇALHO -->
+            <div class="login-header">
+                <div class="login-logo">
+                    <img src="assets/logo.png" alt="Solis">
+                </div>
+                <h1 class="login-title">Bem-vindo de volta!</h1>
+                <p class="login-subtitle">Faça login para acessar o sistema</p>
+            </div>
 
-<header class="topbar">
+            <!-- MENSAGEM DE ERRO -->
+            <div id="login-error" class="login-error hidden"></div>
 
-    <div class="logo-area">
+            <!-- FORMULÁRIO -->
+            <form id="login-form" class="login-form">
+                <!-- USUÁRIO -->
+                <div class="form-group">
+                    <label class="form-label">Usuário</label>
+                    <div class="form-input-wrapper">
+                        <span class="form-input-icon">👤</span>
+                        <input
+                            id="login-username"
+                            type="text"
+                            class="form-input"
+                            placeholder="Digite seu usuário"
+                            required
+                            autocomplete="username"
+                        >
+                    </div>
+                </div>
 
-        <img src="assets/logo.png" alt="Solis">
+                <!-- SENHA -->
+                <div class="form-group">
+                    <label class="form-label">Senha</label>
+                    <div class="form-input-wrapper">
+                        <span class="form-input-icon">🔒</span>
+                        <input
+                            id="login-password"
+                            type="password"
+                            class="form-input"
+                            placeholder="Digite sua senha"
+                            required
+                            autocomplete="current-password"
+                        >
+                        <button
+                            type="button"
+                            class="password-toggle"
+                            id="password-toggle"
+                            aria-label="Mostrar/ocultar senha"
+                        >
+                            👁️
+                        </button>
+                    </div>
+                </div>
 
+                <!-- AÇÕES -->
+                <div class="form-actions">
+                    <div class="checkbox-wrapper">
+                        <input
+                            id="remember-me"
+                            type="checkbox"
+                            name="remember"
+                        >
+                        <label for="remember-me">Lembrar de mim</label>
+                    </div>
+                    <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                </div>
+
+                <!-- BOTÃO ENTRAR -->
+                <button type="submit" class="login-button" id="login-submit">
+                    Entrar
+                </button>
+            </form>
+
+            <!-- DIVISOR -->
+            <div class="login-divider">
+                <span class="login-divider-text">ou continue com</span>
+            </div>
+
+            <!-- ALTERNATIVAS -->
+            <div class="alternative-login">
+                <button type="button" class="alternative-login-button" id="alt-login-btn">
+                    🔐 Acessar com outro usuário
+                </button>
+            </div>
+
+            <!-- RODAPÉ -->
+            <div class="login-footer">
+                © 2026 Solis. Todos os direitos reservados.
+            </div>
+        </div>
     </div>
 
-    <div class="search-area">
+    <!-- DASHBOARD -->
+    <div id="dashboard-screen" class="hidden">
+        <header class="topbar">
+            <div class="logo-area">
+                <img src="assets/logo.png" alt="Solis">
+            </div>
 
-        <input
-                id="pesquisa"
-                type="text"
-                placeholder="Pesquisar documento, fornecedor..."
-        >
+            <div class="search-area">
+                <input
+                    id="pesquisa"
+                    type="text"
+                    placeholder="Pesquisar documento, fornecedor..."
+                >
+            </div>
 
+            <div class="top-actions">
+                <button class="analysis-btn">
+                    Análises
+                </button>
+                <button class="logout-btn" id="logout-btn" style="margin-left: 12px; padding: 8px 16px; background: #ff7a3d; color: white; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600;">
+                    Sair
+                </button>
+            </div>
+        </header>
+
+        <main class="container">
+            <section class="cards">
+                <div class="card">
+                    <span>Total de Documentos</span>
+                    <h2 id="total-documentos">0</h2>
+                </div>
+
+                <div class="card">
+                    <span>Valor Total</span>
+                    <h2 id="valor-total">R$ 0,00</h2>
+                </div>
+
+                <div class="card">
+                    <span>Fornecedores</span>
+                    <h2 id="total-fornecedores">0</h2>
+                </div>
+
+                <div class="card">
+                    <span>Valor / Dia</span>
+                    <h2 id="valor-dia">R$ 0,00</h2>
+                </div>
+            </section>
+
+            <section class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>DOCUMENTO</th>
+                            <th>VENCIMENTO</th>
+                            <th>QUITAÇÃO</th>
+                            <th>1</th>
+                            <th>2</th>
+                            <th>3</th>
+                            <th>4</th>
+                            <th>5</th>
+                            <th>6</th>
+                            <th>VALOR/DIA</th>
+                            <th>FORNECEDOR</th>
+                            <th>VALOR</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="tbody-despesas">
+                    </tbody>
+                </table>
+            </section>
+        </main>
     </div>
 
-    <div class="top-actions">
+    <!-- SCRIPTS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-        <button class="analysis-btn">
+    <script src="js/config.js"></script>
+    <script src="js/database.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/tabela.js"></script>
+    <script src="js/cards.js"></script>
+    <script src="js/pesquisa.js"></script>
+    <script src="js/realtime.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
 
-            Análises
+    <!-- SCRIPT DE CONTROLE DA TELA DE LOGIN -->
+    <script>
+        // Elementos
+        const loginScreen = document.getElementById('login-screen');
+        const dashboardScreen = document.getElementById('dashboard-screen');
+        const loginForm = document.getElementById('login-form');
+        const loginUsername = document.getElementById('login-username');
+        const loginPassword = document.getElementById('login-password');
+        const passwordToggle = document.getElementById('password-toggle');
+        const loginError = document.getElementById('login-error');
+        const loginSubmit = document.getElementById('login-submit');
+        const rememberMe = document.getElementById('remember-me');
+        const altLoginBtn = document.getElementById('alt-login-btn');
+        const logoutBtn = document.getElementById('logout-btn');
 
-        </button>
+        // Toggle de visibilidade de senha
+        passwordToggle.addEventListener('click', (e) => {
+            e.preventDefault();
+            const type = loginPassword.type === 'password' ? 'text' : 'password';
+            loginPassword.type = type;
+            passwordToggle.textContent = type === 'password' ? '👁️' : '👁️‍🗨️';
+        });
 
-    </div>
+        // Limpar erro ao digitar
+        loginUsername.addEventListener('input', () => {
+            if (loginError.textContent) {
+                loginError.classList.add('hidden');
+            }
+        });
 
-</header>
+        loginPassword.addEventListener('input', () => {
+            if (loginError.textContent) {
+                loginError.classList.add('hidden');
+            }
+        });
 
-<main class="container">
+        // Submissão do formulário
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
 
-    <section class="cards">
+            const username = loginUsername.value.trim();
+            const password = loginPassword.value;
 
-        <div class="card">
+            if (!username || !password) {
+                mostrarErro('Por favor, preencha todos os campos');
+                return;
+            }
 
-            <span>Total de Documentos</span>
+            loginSubmit.disabled = true;
+            loginSubmit.classList.add('login-loading');
+            loginError.classList.add('hidden');
 
-            <h2 id="total-documentos">0</h2>
+            try {
+                // Chamar a função de login do auth.js
+                const resultado = await login(username, password);
 
-        </div>
+                if (resultado.sucesso) {
+                    // Salvar preferência de "lembrar de mim"
+                    if (rememberMe.checked) {
+                        localStorage.setItem('solis-remember-me', 'true');
+                        localStorage.setItem('solis-username', username);
+                    } else {
+                        localStorage.removeItem('solis-remember-me');
+                        localStorage.removeItem('solis-username');
+                    }
 
-        <div class="card">
+                    // Mostrar dashboard
+                    mostrarDashboard();
+                } else {
+                    mostrarErro(resultado.mensagem || 'Usuário ou senha incorretos');
+                }
+            } catch (erro) {
+                console.error('Erro ao fazer login:', erro);
+                mostrarErro('Erro ao conectar. Tente novamente.');
+            } finally {
+                loginSubmit.disabled = false;
+                loginSubmit.classList.remove('login-loading');
+            }
+        });
 
-            <span>Valor Total</span>
+        // Botão de acessar com outro usuário
+        altLoginBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            loginUsername.value = '';
+            loginPassword.value = '';
+            loginUsername.focus();
+        });
 
-            <h2 id="valor-total">R$ 0,00</h2>
+        // Botão de logout
+        logoutBtn.addEventListener('click', () => {
+            logout();
+        });
 
-        </div>
+        // Função para mostrar erro
+        function mostrarErro(mensagem) {
+            loginError.textContent = mensagem;
+            loginError.classList.remove('hidden');
+        }
 
-        <div class="card">
+        // Função para mostrar a tela de login
+        function mostrarTelaLogin() {
+            loginScreen.classList.remove('hidden');
+            dashboardScreen.classList.add('hidden');
 
-            <span>Fornecedores</span>
+            // Restaurar username se "lembrar de mim" estava ativo
+            if (localStorage.getItem('solis-remember-me') === 'true') {
+                const username = localStorage.getItem('solis-username');
+                if (username) {
+                    loginUsername.value = username;
+                    rememberMe.checked = true;
+                    loginPassword.focus();
+                }
+            }
+        }
 
-            <h2 id="total-fornecedores">0</h2>
+        // Função para mostrar o dashboard
+        function mostrarDashboard() {
+            loginScreen.classList.add('hidden');
+            dashboardScreen.classList.remove('hidden');
 
-        </div>
+            // Inicializar dashboard
+            if (typeof inicializarDashboard === 'function') {
+                inicializarDashboard();
+            }
+        }
 
-        <div class="card">
+        // Verificar sessão ao carregar
+        document.addEventListener('DOMContentLoaded', async () => {
+            const sessaoValida = await verificarSessao();
 
-            <span>Valor / Dia</span>
+            if (sessaoValida) {
+                mostrarDashboard();
+            } else {
+                mostrarTelaLogin();
+            }
+        });
 
-            <h2 id="valor-dia">R$ 0,00</h2>
+        // Sobrescrever as funções do auth.js para usar as novas telas
+        const originalMostrarLogin = window.mostrarLogin;
+        const originalMostrarDashboard = window.mostrarDashboard;
 
-        </div>
+        window.mostrarLogin = function() {
+            mostrarTelaLogin();
+            if (typeof originalMostrarLogin === 'function') {
+                originalMostrarLogin();
+            }
+        };
 
-    </section>
-
-    <section class="table-container">
-
-        <table>
-
-            <thead>
-
-            <tr>
-
-                <th>DOCUMENTO</th>
-                <th>VENCIMENTO</th>
-                <th>QUITAÇÃO</th>
-                <th>1</th>
-                <th>2</th>
-                <th>3</th>
-                <th>4</th>
-                <th>5</th>
-                <th>6</th>
-                <th>VALOR/DIA</th>
-                <th>FORNECEDOR</th>
-                <th>VALOR</th>
-
-            </tr>
-
-            </thead>
-
-            <tbody id="tbody-despesas">
-
-            </tbody>
-
-        </table>
-
-    </section>
-
-</main>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script src="js/config.js"></script>
-<script src="js/database.js"></script>
-<script src="js/services.js"></script>
-<script src="js/utils.js"></script>
-<script src="js/tabela.js"></script>
-<script src="js/cards.js"></script>
-<script src="js/pesquisa.js"></script>
-<script src="js/realtime.js"></script>
-<script src="js/dashboard.js"></script>
-
+        window.mostrarDashboard = function() {
+            mostrarDashboard();
+            if (typeof originalMostrarDashboard === 'function') {
+                originalMostrarDashboard();
+            }
+        };
+    </script>
 </body>
 
 </html>

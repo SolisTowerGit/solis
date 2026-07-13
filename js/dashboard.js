@@ -6,7 +6,13 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     configurarPesquisa();
 
-    await carregarDespesas();
+    const autenticado = await verificarSessao();
+
+    if (autenticado) {
+
+        await carregarDespesas();
+
+    }
 
 });
 

@@ -1,0 +1,199 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+
+    --laranja:#F58220;
+    --grafite:#5F6062;
+    --branco:#FFFFFF;
+    --fundo:#F4F6F9;
+    --borda:#E6E9EF;
+    --texto:#404040;
+    --cinza:#8B9098;
+
+    --shadow:0 10px 30px rgba(0,0,0,.06);
+
+}
+
+body{
+
+    font-family:'Inter',sans-serif;
+    background:var(--fundo);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    min-height:100vh;
+
+}
+
+.login-container{
+
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    padding:30px;
+
+}
+
+.login-card{
+
+    width:420px;
+
+    background:var(--branco);
+
+    border-radius:20px;
+
+    padding:45px;
+
+    box-shadow:var(--shadow);
+
+    text-align:center;
+
+}
+
+.logo{
+
+    width:170px;
+
+    margin-bottom:30px;
+
+}
+
+.login-card h1{
+
+    color:var(--grafite);
+
+    font-size:30px;
+
+    margin-bottom:10px;
+
+}
+
+.login-card p{
+
+    color:var(--cinza);
+
+    margin-bottom:35px;
+
+    font-size:15px;
+
+}
+
+.input-group{
+
+    text-align:left;
+
+    margin-bottom:22px;
+
+}
+
+.input-group label{
+
+    display:block;
+
+    margin-bottom:8px;
+
+    color:var(--grafite);
+
+    font-size:14px;
+
+    font-weight:600;
+
+}
+
+.input-group input{
+
+    width:100%;
+
+    padding:14px 16px;
+
+    border:1px solid var(--borda);
+
+    border-radius:12px;
+
+    font-size:15px;
+
+    transition:.25s;
+
+}
+
+.input-group input:focus{
+
+    outline:none;
+
+    border-color:var(--laranja);
+
+    box-shadow:0 0 0 3px rgba(245,130,32,.15);
+
+}
+
+.login-btn{
+
+    width:100%;
+
+    margin-top:10px;
+
+    padding:15px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:var(--laranja);
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.25s;
+
+}
+
+.login-btn:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:0 10px 20px rgba(245,130,32,.25);
+
+}
+
+.mensagem{
+
+    margin-top:20px;
+
+    color:#D62828;
+
+    font-size:14px;
+
+    min-height:20px;
+
+}
+
+@media(max-width:500px){
+
+    .login-card{
+
+        width:100%;
+
+        padding:35px 25px;
+
+    }
+
+    .logo{
+
+        width:140px;
+
+    }
+
+}
